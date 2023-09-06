@@ -12,6 +12,6 @@
     "pg": "^8.11.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   }
 }
