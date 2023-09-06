@@ -1,6 +1,6 @@
-const {getData,getDataById,deleteDataById,postData,putData,getDataDetail} = require("../controller/RecipeController")
+const {getData,getDataById,deleteDataById,postData,putData,getDataDetail,getMyRecipe} = require("../controller/RecipeController")
 const express = require('express');
-const { Router } = require("express");
+const {Router} = require("express");
 const router = express.Router()
 const {Protect} = require('./../midleware/Protect')
 const upload = require("../midleware/UploadPhoto");
@@ -9,6 +9,7 @@ const upload = require("../midleware/UploadPhoto");
 router.get('/',Protect,getData)
 router.get('/detail',getDataDetail)
 router.get('/:id',getDataById)
+router.get('/myRecipe/coba',Protect,getMyRecipe)
 router.delete('/:id',Protect,deleteDataById)
 router.post('/',Protect,upload.single('photo'),postData)
 router.put('/:id',Protect,upload.single('photo'),putData)

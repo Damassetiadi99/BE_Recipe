@@ -156,7 +156,7 @@ const UsersController = {
         res.status(200).json({ "status": 200, "message": "get data profile success", users })
     },
     register: async (req, res, next) => {
-        let { email, password, username,photo} = req.body
+        let { email, password, username} = req.body
     
         if (!email || !password || !username) {
             return res.status(404).json({ "status": 404, "message": "email, password dan username harus diisi dengan benar" })

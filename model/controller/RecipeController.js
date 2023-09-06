@@ -1,6 +1,7 @@
-const {getRecipe,getRecipeById,deleteById,postRecipe,putRecipe,getRecipeAll,getRecipeCount} = require('../model2/RecipeModel')
+const {getRecipe,getRecipeById,deleteById,postRecipe,putRecipe,getRecipeAll,getRecipeCount,getMyRecipe} = require('../model2/RecipeModel')
 
 const cloudinary = require ('../config/photo.js')
+const { token } = require('morgan')
 
 const RecipeController ={
     getData:async (req,res,next)=>{
@@ -28,6 +29,58 @@ const RecipeController ={
 
         return res.status(200).json({"status":200,"message":"get data recipe success",data:dataRecipeId.rows[0]})
     },
+    getMyRecipe : async (req, res) => {
+        console.log('app error')
+        console.log(req.payload)
+        try {
+          const { search, searchBy, limit, sort } = req.query;
+          const {id} = req.payload;
+          console.log(req.payload)
+          
+          let page = req.query.page || 1;
+          let limiter = limit || 5;
+
+    
+    
+          data = {
+            search: search || "",
+            searchBy: searchBy || "title",
+            offset: (page - 1) * limiter,
+            limit: limit || 5,
+            sort: sort || "ASC",
+            id: parseInt(id),
+          };
+          let dataRecipe = await getMyRecipe(data);
+          let dataRecipeCount = await getRecipeCount(data);
+          console.log('limit')
+          console.log(limiter)
+          console.log(limit)
+          console.log(req)
+
+         
+    
+          const pagination = {
+            totalPage: Math.ceil(dataRecipeCount.rows[0].count / limiter),
+            totalData: parseInt(dataRecipeCount.rows[0].count),
+            pageNow: parseInt(page),
+          };
+    
+          if (dataRecipe.rows.length === 0) {
+            return res
+              .status(404)
+              .json({ message: "Result not found", pagination });
+          }
+    
+          res.status(200).json({
+            message: "Get recipes sucessfully",
+            data: dataRecipe.rows,
+            pagination,
+          });
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Get recipes pagination failed", error });
+        }
+      },
     deleteDataById: async(req,res,next)=>{
         try{
             const {id} = req.params
@@ -167,20 +220,17 @@ const RecipeController ={
     getDataDetail: async (req,res,next) =>{
         const {search,searchBy,limit,sort} = req.query
 
-        let page = req.query.page || 1
-        let limiter = limit || 5
-
         data = {
             search: search || '',
             searchBy: searchBy || 'title',
             sort: sort,
             offset : (page - 1) * limiter,
             limit: limit || 5
-
     }
+    let page = req.query.page || 1
+    let limiter = limit || 5
     let dataRecipe = await getRecipe(data)
     let dataRecipeCount = await getRecipeCount(data)
-
     let pagination = {
         totalPage: Math.ceil(dataRecipeCount.rows[0].count/limiter),
         totalData: parseInt(dataRecipeCount.rows[0].count),
