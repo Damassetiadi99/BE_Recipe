@@ -219,7 +219,9 @@ const RecipeController ={
     },
     getDataDetail: async (req,res,next) =>{
         const {search,searchBy,limit,sort} = req.query
-
+        let page = req.query.page || 1
+        let limiter = limit || 5
+       
         data = {
             search: search || '',
             searchBy: searchBy || 'title',
@@ -227,8 +229,6 @@ const RecipeController ={
             offset : (page - 1) * limiter,
             limit: limit || 5
     }
-    let page = req.query.page || 1
-    let limiter = limit || 5
     let dataRecipe = await getRecipe(data)
     let dataRecipeCount = await getRecipeCount(data)
     let pagination = {

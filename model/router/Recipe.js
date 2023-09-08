@@ -7,11 +7,11 @@ const upload = require("../midleware/UploadPhoto");
 
 
 router.get('/',Protect,getData)
-router.get('/detail',getDataDetail)
+router.get('/detail/recipe',getDataDetail)
 router.get('/:id',getDataById)
 router.get('/myRecipe/coba',Protect,getMyRecipe)
 router.delete('/:id',Protect,deleteDataById)
 router.post('/recipe',Protect,upload.single('photo'),postData)
-router.put('/putRecipe/id',Protect,upload.single('photo'),putData)
+router.put('/putRecipe/:id',Protect,upload.single('photo'),putData)
 
 module.exports = router;
