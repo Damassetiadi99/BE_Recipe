@@ -11,7 +11,7 @@ router.get('/detail',getDataDetail)
 router.get('/:id',getDataById)
 router.get('/myRecipe/coba',Protect,getMyRecipe)
 router.delete('/:id',Protect,deleteDataById)
-router.post('/',Protect,upload.single('photo'),postData)
-router.put('/:id',Protect,upload.single('photo'),putData)
+router.post('/recipe',Protect,upload.single('photo'),postData)
+router.put('/putRecipe/id',Protect,upload.single('photo'),putData)
 
 module.exports = router;
