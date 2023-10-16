@@ -1,7 +1,7 @@
-const {getRecipe,getRecipeById,deleteById,postRecipe,putRecipe,getRecipeAll,getRecipeCount,getMyRecipe} = require('../model2/RecipeModel')
+const {getRecipe,getRecipeById,deleteById,postRecipe,putRecipe,getRecipeAll,getRecipeCount,getMyRecipe} = require('../model/RecipeModel')
 
 const cloudinary = require ('../config/photo.js')
-const { token } = require('morgan')
+
 
 const RecipeController ={
     getData:async (req,res,next)=>{

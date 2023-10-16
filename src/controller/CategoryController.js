@@ -1,4 +1,4 @@
-const {getCategory,deleteUserById,postCategory,getCategoryById,putCategory} = require('../model2/CategoryModel')
+const {getCategory,deleteUserById,postCategory,getCategoryById,putCategory} = require('../model/CategoryModel')
 
 const CategoryController = {
     getData: async (req,res,next)=>{
