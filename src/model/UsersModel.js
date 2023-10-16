@@ -110,11 +110,11 @@ const getUserCount = async (data) => {
 }
 
 const createUser = async (data) => {
-    let {username,email,password,photo} = data
+    let {username,email,password} = data
     console.log("model createUser")
     return new Promise((resolve,reject)=>
         Pool.query(`INSERT INTO users(username,email,password,photo) VALUES('${username}',
-        '${email}','${password}','${photo}')`,(err,result)=>{
+        '${email}','${password}')`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else{
