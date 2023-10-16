@@ -113,7 +113,7 @@ const createUser = async (data) => {
     let {username,email,password} = data
     console.log("model createUser")
     return new Promise((resolve,reject)=>
-        Pool.query(`INSERT INTO users(username,email,password,photo) VALUES('${username}',
+        Pool.query(`INSERT INTO users(username,email,password) VALUES('${username}',
         '${email}','${password}')`,(err,result)=>{
             if(!err){
                 resolve(result)
