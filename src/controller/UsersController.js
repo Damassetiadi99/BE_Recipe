@@ -1,6 +1,6 @@
-const { getUser, getUsersById, deleteUserById, postUser, putUser, getUserAll, getUserCount, getUsersByEmail, createUser } = require('../model2/UsersModel')
+const { getUser, getUsersById, deleteUserById, postUser, putUser, getUserAll, getUserCount, getUsersByEmail, createUser } = require('../model/UsersModel')
 const argon2 = require('argon2');
-const {GenerateToken} = require('./../helpers/GenerateToken');
+const {GenerateToken} = require('../helpers/GenerateToken');
 const cloudinary = require('../config/photo')
 
 const UsersController = {
@@ -164,17 +164,15 @@ const UsersController = {
         let user = await getUsersByEmail(email)
 
         if (user.rows[0]) {
-            return res.status(404).json({ "status": 404, "message": "email sudah terdaftar, silahkan login" })
+            return res.status(401).json({ "status": 401, "message": "email sudah terdaftar, silahkan masukan email lain" })
         }
         password = await argon2.hash(password);
-        let photousers = await cloudinary.uploader.upload(req.file.path,{folder : 'recipe'});
-        console.log(photousers.url)
+        
         
 
 
         let dataUser = {
-            email, username,
-            password,photo : photousers.url
+            email, username, password 
         }
         console.log('dataUser')
         console.log(dataUser)
