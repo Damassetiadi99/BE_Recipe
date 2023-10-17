@@ -31,7 +31,7 @@ const getRecipe = (data) => {
 const getRecipeById = async (id) => {
     console.log("model recipe by id ->",id)
     return new Promise((resolve,reject)=>
-        Pool.query(`SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, category.name AS category, users.username AS author ,users.photo AS author_photo FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id   WHERE recipe.id=${id}`,(err,result)=>{
+        Pool.query(`SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo,recipe.created_at, category.name AS category, users.username AS author ,users.photo AS author_photo FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id   WHERE recipe.id=${id}`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else{
