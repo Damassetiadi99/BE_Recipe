@@ -6,9 +6,9 @@ const {Protect} = require('./../midleware/Protect')
 const upload = require("../midleware/UploadPhoto");
 
 
-router.get('/',Protect,getData)
+router.get('/',Protect,getDataDetail)
 router.get('/detail/recipe',getDataDetail)
-router.get('/:id',getDataById)
+router.get('/:id',  )
 router.get('/myRecipe/coba',Protect,getMyRecipe)
 router.delete('/:id',Protect,deleteDataById)
 router.post('/recipe',Protect,upload.single('photo'),postData)
