@@ -11,7 +11,7 @@ const RecipeController ={
             res.status(200).json({"status":200,"message":"get data recipe success",data:dataRecipe.rows})
         }
     },
-    getDataById: async (req,res,next) => {
+     getDataById: async (req,res,next) => {
         const {id} = req.params
 
         if(!id || id <= 0 || isNaN(id)){
@@ -90,16 +90,11 @@ const RecipeController ={
             }
 
             let dataRecipeId = await getRecipeById(parseInt(id))
-
-            let users_id = req.payload.id
-    
-            console.log('id data')
-            console.log(users_id)
             console.log(dataRecipeId.rows[0].users_id)
-            if(users_id != dataRecipeId.rows[0].users_id){
-                return res.status(404).json({ "message": "recipe bukan milik anda" });
-            }
 
+            if (req.payload.id != dataRecipeId.rows[0].users_id) {
+                return res.status(403).json({ message: "Recipe is not owned by you" });
+              }
             let result = await deleteById(parseInt(id))
 
             
