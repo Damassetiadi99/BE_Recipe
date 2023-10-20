@@ -6,14 +6,14 @@ const multer = require('../midleware/UploadPhoto')
 
 
 
-router.get('/',getDataUsers)
+router.get('/getUser',getDataUsers)
 router.get('/detail',getDataUserDetail)
 router.get('/:id',getDataUserById)
 router.delete('/:id',deleteDataUserById)
 router.post('/',postDataUser)
 router.post('/login',login)
 router.post('/register',multer.single('photo'),register)
-router.put('/:id',putDataUser)
+router.put('/putUser/:id',putDataUser)
 
 
 
