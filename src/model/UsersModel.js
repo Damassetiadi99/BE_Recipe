@@ -68,19 +68,32 @@ const postUser = async (data) => {
     )
 }
 
-const putUser = async (data,id) => {
-    const{name,email} = data
-    console.log("model putusers")
-    return new Promise((resolve,reject)=>
-        Pool.query(`UPDATE users SET name='${name}', email='${email}' WHERE id=${id}`,(err,result)=>{
-            if(!err){
+// const putUser = async (data,id) => {
+//     const{name,email} = data
+//     console.log("model putusers")
+//     return new Promise((resolve,reject)=>
+//         Pool.query(`UPDATE users SET name='${name}', email='${email}' WHERE id=${id}`,(err,result)=>{
+//             if(!err){
+//                 resolve(result)
+//             } else{
+//                 reject(err)
+//             }
+//         })
+//     )
+// }
+const putUser = async (data, id) => {
+    const { name, email, password, image } = data
+    return new Promise((resolve, reject) =>
+        Pool.query(`UPDATE users SET name='${name}',email='${email}',password='${password}', photo = '${image}' WHERE id=${id}`, (err, result) => {
+            if (!err) {
                 resolve(result)
-            } else{
+            } else {
                 reject(err)
             }
         })
     )
 }
+
 
 const getUserAll = async () => {
     console.log("model getRecipe")
