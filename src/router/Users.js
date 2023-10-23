@@ -2,7 +2,7 @@ const {getDataUsers,getDataUserById,deleteDataUserById,postDataUser,putDataUser,
 const express = require('express');
 const { Router } = require("express");
 const router = express.Router()
-const multer = require('../midleware/UploadPhoto')
+const upload = require('../midleware/UploadPhoto')
 
 
 
@@ -12,8 +12,8 @@ router.get('/:id',getDataUserById)
 router.delete('/:id',deleteDataUserById)
 router.post('/',postDataUser)
 router.post('/login',login)
-router.post('/register',multer.single('photo'),register)
-router.put('/putUser/:id',putDataUser)
+router.post('/register',upload.single('photo'),register)
+router.put('/putUser/:id',upload.single('photo'),putDataUser)
 
 
 

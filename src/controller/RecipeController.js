@@ -186,10 +186,10 @@ const RecipeController ={
             if (!ImageCloud) {
                 return res.status(404).json({ "message": "upload photo fail" });
             }
-            console.log(ImageCloud)
-            console.log('id data')
-            console.log(users_id)
-            console.log(dataRecipeId.rows[0].users_id)
+            // console.log(ImageCloud)
+            // console.log('id data')
+            // console.log(users_id)
+            // console.log(dataRecipeId.rows[0].users_id)
             if (users_id != dataRecipeId.rows[0].users_id) {
                 return res.status(404).json({ "message": "recipe bukan milik anda" });
             }

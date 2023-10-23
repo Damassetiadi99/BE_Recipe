@@ -69,80 +69,92 @@ const UsersController = {
         return res.status(200).json({ "status": 200, "message": "data users success", data })
 
     },
-    // putDataUser: async (req, res, next) => {
-    //     const { id } = req.params
-    //     const { name, email } = req.body
-
-    //     if (!id || id <= 0 || isNaN(id)) {
-    //         return res.status(404).json({ "message": "id wrong" });
-    //     }
-
-    //     let dataUsersId = await getUsersById(parseInt(id))
-
-    //     console.log("put data")
-    //     console.log(dataUsersId.rows[0])
-
-    //     let data = {
-    //         name: name || dataUsersId.rows[0].name,
-    //         email: email || dataUsersId.rows[0].email,
-    //         id
-    //     }
-
-    //     let result = putUser(data, id)
-    //     console.log(result)
-
-    //     delete data.id
-
-    //     return res.status(200).json({ "status": 200, "message": "update data Users success", data })
-
-    // },
-    putData: async (req, res, next) => {
+    putDataUser: async (req, res, next) => {
         const { id } = req.params
-        const { name, email, password } = req.body
-        const image = req.file
-        try {
-            const current_user_id = req.user.id
-            if (!id || id <= 0 || isNaN(id)) {
-                return res.status(404).json({ "message": "id wrong" });
-            }
-            
-            let dataUsersId = await getUsersById(parseInt(id))
-            if (dataUsersId.rowCount === 0) {
-                return res.status(404).json({ "status": 404, "message": "The data you tried to update is not found in the database" });
-            }
-            if (current_user_id !== dataUsersId.rows[0].id) {
-                return res.status(404).json({ "message": "akun ini bukan milik anda" });
-            }
-            console.log(id)
-                console.log(req.params)
-                console.log(req.user.id)
-                console.log(current_user_id)
-                console.log(dataUsersId.rows[0].id)
-            
-            const passwordHashed = password ? await argon2.hash(password) : password
-            
-            const hasilImage = image ? await cloudinary.uploader.upload(image.path, {
-                use_filename: true,
-                folder: "file-upload",
-            }) : { secure_url: '' };
+        const data1 = req.body
+        const ImageCloud = await cloudinary.uploader.upload(req.file.path, { folder: 'recipe' });
 
-            let data = {
-                name: name || dataUsersId.rows[0].name,
-                email: email || dataUsersId.rows[0].email,
-                password: passwordHashed || dataUsersId.rows[0].password,
-                image: hasilImage.secure_url || dataUsersId.rows[0].photo,
-            }
+        if (!ImageCloud) {
+            return res.status(404).json({ "message": "upload photo fail" });
+        }
+        console.log(ImageCloud)
+        // console.log(data1)
+        console.log('data1=======')
+        const { username, email,password,photo } = req.body
 
-            let result = await putUser(data, id)
-            console.log(data)
+        if (!id || id <= 0 || isNaN(id)) {
+            return res.status(404).json({ "message": "id wrong" });
+        }
+        console.log(req.body)
 
-            return res.status(200).json({ "status": 200, "message": "update data users success" })
-        } catch (err) {
-            return res.status(404).json({ "status": 404, "message": err.message })
+        let dataUsersId = await getUsersById(parseInt(id))
 
+        console.log("put data")
+        console.log(dataUsersId)
+
+        let data = {
+            username: username || dataUsersId.rows[0].username,
+            email: email || dataUsersId.rows[0].email,
+            photo :ImageCloud.url,
+            password : password || dataUsersId.rows[0].password
+        
         }
 
+        let result = putUser(data, id)
+        console.log(result)
+
+        delete data.id
+
+        return res.status(200).json({ "status": 200, "message": "update data Users success", data })
+
     },
+    // putData: async (req, res, next) => {
+    //     const { id } = req.params
+    //     const { name, email, password } = req.body
+    //     const image = req.file
+    //     try {
+    //         const current_user_id = req.user.id
+    //         if (!id || id <= 0 || isNaN(id)) {
+    //             return res.status(404).json({ "message": "id wrong" });
+    //         }
+            
+    //         let dataUsersId = await getUsersById(parseInt(id))
+    //         if (dataUsersId.rowCount === 0) {
+    //             return res.status(404).json({ "status": 404, "message": "The data you tried to update is not found in the database" });
+    //         }
+    //         if (current_user_id !== dataUsersId.rows[0].id) {
+    //             return res.status(404).json({ "message": "akun ini bukan milik anda" });
+    //         }
+    //         console.log(id)
+    //             console.log(req.params)
+    //             console.log(req.user.id)
+    //             console.log(current_user_id)
+    //             console.log(dataUsersId.rows[0].id)
+            
+    //         const passwordHashed = password ? await argon2.hash(password) : password
+            
+    //         const hasilImage = image ? await cloudinary.uploader.upload(image.path, {
+    //             use_filename: true,
+    //             folder: "file-upload",
+    //         }) : { secure_url: '' };
+
+    //         let data = {
+    //             name: name || dataUsersId.rows[0].name,
+    //             email: email || dataUsersId.rows[0].email,
+    //             password: passwordHashed || dataUsersId.rows[0].password,
+    //             image: hasilImage.secure_url || dataUsersId.rows[0].photo,
+    //         }
+
+    //         let result = await putUser(data, id)
+    //         console.log(data)
+
+    //         return res.status(200).json({ "status": 200, "message": "update data users success" })
+    //     } catch (err) {
+    //         return res.status(404).json({ "status": 404, "message": err.message })
+
+    //     }
+
+    // },
     getDataUserDetail: async (req, res, next) => {
         const { search, searchBy, limit, sort } = req.query
 
