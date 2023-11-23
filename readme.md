@@ -56,7 +56,7 @@ git clone https://github.com/Damassetiadi99/BE_Recipe
 After installation is done, on your terminal type:
 
 ```
-cd recipeAPI
+cd BE_Recipe
 ```
 
 You need install package dependencies, to make this project work properly, in your terminal type:
