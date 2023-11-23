@@ -215,38 +215,28 @@ const UsersController = {
         res.status(200).json({ "status": 200, "message": "get data profile success", users })
     },
     register: async (req, res, next) => {
-        let { email, password, username} = req.body
-    
-        if (!email || !password || !username) {
+        let { username,email, password } = req.body
+        if ( !username || !email || !password ) {
             return res.status(404).json({ "status": 404, "message": "email, password dan username harus diisi dengan benar" })
         }
         let user = await getUsersByEmail(email)
-
         if (user.rows[0]) {
             return res.status(401).json({ "status": 401, "message": "email sudah terdaftar, silahkan masukan email lain" })
         }
         password = await argon2.hash(password);
-        
-        
-
-
+    
         let dataUser = {
             email, username, password 
         }
         console.log('dataUser')
         console.log(dataUser)
-
-
-
         let data = await createUser(dataUser)
         console.log('dataUsers1')
         // console.log(dataUser)
         console.log(data)
-
         if (!data.rowCount == 1) {
             return res.status(404).json({ "status": 404, "message": "register gagal" })
         }
-
         return res.status(200).json({ "status": 200, "message": "register user berhasil" })
 
 
