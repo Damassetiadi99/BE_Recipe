@@ -19,9 +19,6 @@ const UsersController = {
 
         let dataUsersId = await getUsersById(parseInt(id))
 
-        console.log("dataUser")
-        console.log(dataUsersId)
-
         if (!dataUsersId.rows[0]) {
             return res.status(200).json({ "status": 200, "message": "get data Users not found", data: [] })
         }
@@ -37,7 +34,6 @@ const UsersController = {
             }
 
             let result = await deleteUserById(parseInt(id))
-            console.log(result)
             if (result.rowCount == 0) {
                 throw new Error("delete data failed")
             }
@@ -49,8 +45,6 @@ const UsersController = {
     },
     postDataUser: async (req, res, next) => {
         const { name, email } = req.body
-        console.log("post data ")
-        console.log(name, email)
 
         if (!name || !email) {
             return res.status(404).json({ "message": "input name and email required" });
@@ -61,11 +55,7 @@ const UsersController = {
 
         }
 
-        console.log("data")
-        console.log(data)
         let result = postUser(data)
-        console.log(result)
-
         return res.status(200).json({ "status": 200, "message": "data users success", data })
 
     },
@@ -77,21 +67,13 @@ const UsersController = {
         if (!ImageCloud) {
             return res.status(404).json({ "message": "upload photo fail" });
         }
-        console.log(ImageCloud)
-        // console.log(data1)
-        console.log('data1=======')
         const { username, email,password,photo } = req.body
 
         if (!id || id <= 0 || isNaN(id)) {
             return res.status(404).json({ "message": "id wrong" });
         }
-        console.log(req.body)
 
         let dataUsersId = await getUsersById(parseInt(id))
-
-        console.log("put data")
-        console.log(dataUsersId)
-
         let data = {
             username: username || dataUsersId.rows[0].username,
             email: email || dataUsersId.rows[0].email,
@@ -101,8 +83,6 @@ const UsersController = {
         }
 
         let result = putUser(data, id)
-        console.log(result)
-
         delete data.id
 
         return res.status(200).json({ "status": 200, "message": "update data Users success", data })
@@ -125,12 +105,6 @@ const UsersController = {
     //         if (current_user_id !== dataUsersId.rows[0].id) {
     //             return res.status(404).json({ "message": "akun ini bukan milik anda" });
     //         }
-    //         console.log(id)
-    //             console.log(req.params)
-    //             console.log(req.user.id)
-    //             console.log(current_user_id)
-    //             console.log(dataUsersId.rows[0].id)
-            
     //         const passwordHashed = password ? await argon2.hash(password) : password
             
     //         const hasilImage = image ? await cloudinary.uploader.upload(image.path, {
@@ -146,8 +120,6 @@ const UsersController = {
     //         }
 
     //         let result = await putUser(data, id)
-    //         console.log(data)
-
     //         return res.status(200).json({ "status": 200, "message": "update data users success" })
     //     } catch (err) {
     //         return res.status(404).json({ "status": 404, "message": err.message })
@@ -177,33 +149,23 @@ const UsersController = {
             totalData: parseInt(dataUserCount.rows[0].count),
             pageNow: parseInt(page)
         }
-
-        console.log("datarecipe")
-        console.log(dataUser)
-        console.log("total data")
-        console.log(dataUserCount.rows[0].count)
         if (dataUser) {
             res.status(200).json({ "status": 200, "message": "get data user succes", data: dataUser.rows, pagination })
         }
     },
     login: async (req, res, next) => {
         let { email, password } = req.body
-        console.log(email, password)
-
         if (!email || !password) {
             return res.status(404).json({ "status": 404, "message": "email atau password harus diisi dengan benar" })
         }
 
         let data = await getUsersByEmail(email)
-        console.log(data.rows[0])
 
         if (!data.rows[0]) {
             return res.status(404).json({ "status": 404, "message": "email belum terdaftar" })
         }
 
         let users = data.rows[0]
-        console.log('users.password')
-        console.log(users.password)
         let verify = await argon2.verify(users.password, password)
         if (!verify) {
             return res.status(404).json({ "status": 404, "message": "password salah" })
@@ -228,12 +190,7 @@ const UsersController = {
         let dataUser = {
             email, username, password 
         }
-        console.log('dataUser')
-        console.log(dataUser)
         let data = await createUser(dataUser)
-        console.log('dataUsers1')
-        // console.log(dataUser)
-        console.log(data)
         if (!data.rowCount == 1) {
             return res.status(404).json({ "status": 404, "message": "register gagal" })
         }

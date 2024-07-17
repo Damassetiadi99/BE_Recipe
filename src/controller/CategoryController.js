@@ -16,7 +16,6 @@ const CategoryController = {
             }
             
             let result = await deleteUserById(parseInt(id))
-            console.log(result)
             if(result.rowCount==0){
                 throw new Error("delete data failed")
             }
@@ -28,9 +27,6 @@ const CategoryController = {
     },
     postDataCategory: async(req,res,next)=>{
         const{name} = req.body
-        console.log("post data ")
-        console.log(name)
-    
         if(!name){
             return res.status(404).json({ "message": "input name required" });
         }
@@ -38,11 +34,7 @@ const CategoryController = {
             name: name
         }
 
-        console.log("data")
-        console.log(data)
         let result = postCategory(data)
-        console.log(result)
-
         return res.status(200).json({"status":200,"message":"data Category success",data})
 
     },
@@ -56,17 +48,12 @@ const CategoryController = {
 
         let dataCategoryId = await getCategoryById(parseInt(id))
 
-        console.log("put data")
-        console.log(dataCategoryId.rows[0])
-
         let data = {
             name: name || dataCategoryId.rows[0].name,
             id
         }
 
         let result = putCategory(data,id)
-        console.log(result)
-
         delete data.id
 
         return res.status(200).json({"status":200,"message":"update data Category success",data})
@@ -80,9 +67,6 @@ const CategoryController = {
         }
 
         let dataCategoryId = await getCategoryById(parseInt(id))
-
-        console.log("dataCategory")
-        console.log(dataCategoryId)
 
         if(!dataCategoryId.rows[0]){
             return res.status(200).json({"status":200,"message":"get data Category not found",data:[]})
